@@ -1,6 +1,6 @@
 import { print, visitUrl } from "kolmafia";
 // import { uniq } from "lodash";
-
+/*
 const getTurns = /\((\d+) turns?\)/gm;
 const getName = /(?:<b>)?([\w\s_]+) \(#(\d+)\)/gm;
 const page = visitUrl("clan_raidlogs.php");
@@ -55,8 +55,8 @@ for (const element of lines) {
       if (nn) {
         print(`${nn[0]}`);
         print(`${nn[1]}`);
-      }
-      /*
+      } */
+/*
       const n = element.match(getName);
       // there's probably a way to get just the name in regexp
       // but I haven't figured it out, so we're isolating it here
@@ -66,7 +66,7 @@ for (const element of lines) {
       }
       n1 = n1?.slice(0, n1.indexOf(` (#`));
 */
-      const tt = getTurns.exec(element);
+/*     const tt = getTurns.exec(element);
       if (tt) {
         print(`${tt[0]}`);
         print(`${tt[1]}`);
@@ -159,3 +159,4 @@ for (const player of playerTable.keys()) {
   const s = Math.round(sliders * p);
   print(`${player} gets ${s} sliders`);
 }
+*/
