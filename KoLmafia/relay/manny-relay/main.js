@@ -1,28 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 8469:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-__webpack_require__(9101);
-
-__webpack_require__(8938);
-
-var entryUnbind = __webpack_require__(7592);
-
-module.exports = entryUnbind('Array', 'flat');
-
-/***/ }),
-
-/***/ 2580:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var parent = __webpack_require__(8469);
-
-module.exports = parent;
-
-/***/ }),
-
 /***/ 1361:
 /***/ ((module) => {
 
@@ -32,33 +10,6 @@ module.exports = function (it) {
   }
 
   return it;
-};
-
-/***/ }),
-
-/***/ 7331:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var wellKnownSymbol = __webpack_require__(7457);
-
-var create = __webpack_require__(5131);
-
-var definePropertyModule = __webpack_require__(811);
-
-var UNSCOPABLES = wellKnownSymbol('unscopables');
-var ArrayPrototype = Array.prototype; // Array.prototype[@@unscopables]
-// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-
-if (ArrayPrototype[UNSCOPABLES] == undefined) {
-  definePropertyModule.f(ArrayPrototype, UNSCOPABLES, {
-    configurable: true,
-    value: create(null)
-  });
-} // add a key to Array.prototype[@@unscopables]
-
-
-module.exports = function (key) {
-  ArrayPrototype[UNSCOPABLES][key] = true;
 };
 
 /***/ }),
@@ -114,35 +65,6 @@ module.exports = {
   // `Array.prototype.indexOf` method
   // https://tc39.es/ecma262/#sec-array.prototype.indexof
   indexOf: createMethod(false)
-};
-
-/***/ }),
-
-/***/ 586:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var isObject = __webpack_require__(2949);
-
-var isArray = __webpack_require__(1746);
-
-var wellKnownSymbol = __webpack_require__(7457);
-
-var SPECIES = wellKnownSymbol('species'); // `ArraySpeciesCreate` abstract operation
-// https://tc39.es/ecma262/#sec-arrayspeciescreate
-
-module.exports = function (originalArray, length) {
-  var C;
-
-  if (isArray(originalArray)) {
-    C = originalArray.constructor; // cross-realm fallback
-
-    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;else if (isObject(C)) {
-      C = C[SPECIES];
-      if (C === null) C = undefined;
-    }
-  }
-
-  return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
 };
 
 /***/ }),
@@ -338,21 +260,6 @@ module.exports = version && +version;
 
 /***/ }),
 
-/***/ 7592:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var global = __webpack_require__(2328);
-
-var bind = __webpack_require__(1871);
-
-var call = Function.call;
-
-module.exports = function (CONSTRUCTOR, METHOD, length) {
-  return bind(call, global[CONSTRUCTOR].prototype[METHOD], length);
-};
-
-/***/ }),
-
 /***/ 393:
 /***/ ((module) => {
 
@@ -444,50 +351,6 @@ module.exports = function (exec) {
     return true;
   }
 };
-
-/***/ }),
-
-/***/ 8529:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var isArray = __webpack_require__(1746);
-
-var toLength = __webpack_require__(588);
-
-var bind = __webpack_require__(1871); // `FlattenIntoArray` abstract operation
-// https://tc39.github.io/proposal-flatMap/#sec-FlattenIntoArray
-
-
-var flattenIntoArray = function flattenIntoArray(target, original, source, sourceLen, start, depth, mapper, thisArg) {
-  var targetIndex = start;
-  var sourceIndex = 0;
-  var mapFn = mapper ? bind(mapper, thisArg, 3) : false;
-  var element;
-
-  while (sourceIndex < sourceLen) {
-    if (sourceIndex in source) {
-      element = mapFn ? mapFn(source[sourceIndex], sourceIndex, original) : source[sourceIndex];
-
-      if (depth > 0 && isArray(element)) {
-        targetIndex = flattenIntoArray(target, original, element, toLength(element.length), targetIndex, depth - 1) - 1;
-      } else {
-        if (targetIndex >= 0x1FFFFFFFFFFFFF) throw TypeError('Exceed the acceptable array length');
-        target[targetIndex] = element;
-      }
-
-      targetIndex++;
-    }
-
-    sourceIndex++;
-  }
-
-  return targetIndex;
-};
-
-module.exports = flattenIntoArray;
 
 /***/ }),
 
@@ -598,15 +461,6 @@ module.exports = Object.hasOwn || function hasOwn(it, key) {
 /***/ ((module) => {
 
 module.exports = {};
-
-/***/ }),
-
-/***/ 4861:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var getBuiltIn = __webpack_require__(1575);
-
-module.exports = getBuiltIn('document', 'documentElement');
 
 /***/ }),
 
@@ -768,20 +622,6 @@ var ArrayPrototype = Array.prototype; // check on default Array iterator
 
 module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayPrototype[ITERATOR] === it);
-};
-
-/***/ }),
-
-/***/ 1746:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var classof = __webpack_require__(6202); // `IsArray` abstract operation
-// https://tc39.es/ecma262/#sec-isarray
-// eslint-disable-next-line es/no-array-isarray -- safe
-
-
-module.exports = Array.isArray || function isArray(arg) {
-  return classof(arg) == 'Array';
 };
 
 /***/ }),
@@ -953,138 +793,6 @@ var inspectSource = __webpack_require__(7599);
 
 var WeakMap = global.WeakMap;
 module.exports = typeof WeakMap === 'function' && /native code/.test(inspectSource(WeakMap));
-
-/***/ }),
-
-/***/ 5131:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var anObject = __webpack_require__(3739);
-
-var defineProperties = __webpack_require__(422);
-
-var enumBugKeys = __webpack_require__(393);
-
-var hiddenKeys = __webpack_require__(1055);
-
-var html = __webpack_require__(4861);
-
-var documentCreateElement = __webpack_require__(4603);
-
-var sharedKey = __webpack_require__(1449);
-
-var GT = '>';
-var LT = '<';
-var PROTOTYPE = 'prototype';
-var SCRIPT = 'script';
-var IE_PROTO = sharedKey('IE_PROTO');
-
-var EmptyConstructor = function EmptyConstructor() {
-  /* empty */
-};
-
-var scriptTag = function scriptTag(content) {
-  return LT + SCRIPT + GT + content + LT + '/' + SCRIPT + GT;
-}; // Create object with fake `null` prototype: use ActiveX Object with cleared prototype
-
-
-var NullProtoObjectViaActiveX = function NullProtoObjectViaActiveX(activeXDocument) {
-  activeXDocument.write(scriptTag(''));
-  activeXDocument.close();
-  var temp = activeXDocument.parentWindow.Object;
-  activeXDocument = null; // avoid memory leak
-
-  return temp;
-}; // Create object with fake `null` prototype: use iframe Object with cleared prototype
-
-
-var NullProtoObjectViaIFrame = function NullProtoObjectViaIFrame() {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = documentCreateElement('iframe');
-  var JS = 'java' + SCRIPT + ':';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  html.appendChild(iframe); // https://github.com/zloirock/core-js/issues/475
-
-  iframe.src = String(JS);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(scriptTag('document.F=Object'));
-  iframeDocument.close();
-  return iframeDocument.F;
-}; // Check for document.domain and active x support
-// No need to use active x approach when document.domain is not set
-// see https://github.com/es-shims/es5-shim/issues/150
-// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-// avoid IE GC bug
-
-
-var activeXDocument;
-
-var _NullProtoObject = function NullProtoObject() {
-  try {
-    /* global ActiveXObject -- old IE */
-    activeXDocument = document.domain && new ActiveXObject('htmlfile');
-  } catch (error) {
-    /* ignore */
-  }
-
-  _NullProtoObject = activeXDocument ? NullProtoObjectViaActiveX(activeXDocument) : NullProtoObjectViaIFrame();
-  var length = enumBugKeys.length;
-
-  while (length--) {
-    delete _NullProtoObject[PROTOTYPE][enumBugKeys[length]];
-  }
-
-  return _NullProtoObject();
-};
-
-hiddenKeys[IE_PROTO] = true; // `Object.create` method
-// https://tc39.es/ecma262/#sec-object.create
-
-module.exports = Object.create || function create(O, Properties) {
-  var result;
-
-  if (O !== null) {
-    EmptyConstructor[PROTOTYPE] = anObject(O);
-    result = new EmptyConstructor();
-    EmptyConstructor[PROTOTYPE] = null; // add "__proto__" for Object.getPrototypeOf polyfill
-
-    result[IE_PROTO] = O;
-  } else result = _NullProtoObject();
-
-  return Properties === undefined ? result : defineProperties(result, Properties);
-};
-
-/***/ }),
-
-/***/ 422:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var DESCRIPTORS = __webpack_require__(2171);
-
-var definePropertyModule = __webpack_require__(811);
-
-var anObject = __webpack_require__(3739);
-
-var objectKeys = __webpack_require__(669); // `Object.defineProperties` method
-// https://tc39.es/ecma262/#sec-object.defineproperties
-// eslint-disable-next-line es/no-object-defineproperties -- safe
-
-
-module.exports = DESCRIPTORS ? Object.defineProperties : function defineProperties(O, Properties) {
-  anObject(O);
-  var keys = objectKeys(Properties);
-  var length = keys.length;
-  var index = 0;
-  var key;
-
-  while (length > index) {
-    definePropertyModule.f(O, key = keys[index++], Properties[key]);
-  }
-
-  return O;
-};
 
 /***/ }),
 
@@ -1608,54 +1316,6 @@ module.exports = function (name) {
 
 /***/ }),
 
-/***/ 9101:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var $ = __webpack_require__(9004);
-
-var flattenIntoArray = __webpack_require__(8529);
-
-var toObject = __webpack_require__(6068);
-
-var toLength = __webpack_require__(588);
-
-var toInteger = __webpack_require__(4770);
-
-var arraySpeciesCreate = __webpack_require__(586); // `Array.prototype.flat` method
-// https://tc39.es/ecma262/#sec-array.prototype.flat
-
-
-$({
-  target: 'Array',
-  proto: true
-}, {
-  flat: function flat() {
-    var depthArg = arguments.length ? arguments[0] : undefined;
-    var O = toObject(this);
-    var sourceLen = toLength(O.length);
-    var A = arraySpeciesCreate(O, 0);
-    A.length = flattenIntoArray(A, O, O, sourceLen, 0, depthArg === undefined ? 1 : toInteger(depthArg));
-    return A;
-  }
-});
-
-/***/ }),
-
-/***/ 8938:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-// this method was added to unscopables after implementation
-// in popular engines, so it's moved to a separate module
-var addToUnscopables = __webpack_require__(7331); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-
-
-addToUnscopables('flat');
-
-/***/ }),
-
 /***/ 4875:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1764,923 +1424,8 @@ __webpack_require__.r(__webpack_exports__);
 
 ;// CONCATENATED MODULE: external "kolmafia"
 const external_kolmafia_namespaceObject = require("kolmafia");
-;// CONCATENATED MODULE: ./node_modules/libram/dist/template-string.js
-var concatTemplateString = function concatTemplateString(literals) {
-  for (var _len = arguments.length, placeholders = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    placeholders[_key - 1] = arguments[_key];
-  }
-
-  return literals.reduce((acc, literal, i) => acc + literal + (placeholders[i] || ""), "");
-};
-
-var createSingleConstant = Type => function (literals) {
-  for (var _len2 = arguments.length, placeholders = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-    placeholders[_key2 - 1] = arguments[_key2];
-  }
-
-  var input = concatTemplateString.apply(void 0, [literals].concat(placeholders));
-  return Type.get(input);
-};
-
-var createPluralConstant = Type => function (literals) {
-  for (var _len3 = arguments.length, placeholders = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-    placeholders[_key3 - 1] = arguments[_key3];
-  }
-
-  var input = concatTemplateString.apply(void 0, [literals].concat(placeholders));
-
-  if (input === "") {
-    return Type.all();
-  }
-
-  return Type.get(input.split(/\s*,\s*/));
-};
-/**
- * A Bounty specified by name.
- *
- * @category In-game constant
- */
-
-
-var $bounty = createSingleConstant(Bounty);
-/**
- * A list of Bounties specified by a comma-separated list of names.
- * For a list of all possible Bounties, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $bounties = createPluralConstant(Bounty);
-/**
- * A Class specified by name.
- *
- * @category In-game constant
- */
-
-var template_string_$class = createSingleConstant(Class);
-/**
- * A list of Classes specified by a comma-separated list of names.
- * For a list of all possible Classes, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $classes = createPluralConstant(Class);
-/**
- * A Coinmaster specified by name.
- *
- * @category In-game constant
- */
-
-var $coinmaster = createSingleConstant(Coinmaster);
-/**
- * A list of Coinmasters specified by a comma-separated list of names.
- * For a list of all possible Coinmasters, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $coinmasters = createPluralConstant(Coinmaster);
-/**
- * An Effect specified by name.
- *
- * @category In-game constant
- */
-
-var $effect = createSingleConstant(Effect);
-/**
- * A list of Effects specified by a comma-separated list of names.
- * For a list of all possible Effects, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $effects = createPluralConstant(Effect);
-/**
- * An Element specified by name.
- *
- * @category In-game constant
- */
-
-var $element = createSingleConstant(Element);
-/**
- * A list of Elements specified by a comma-separated list of names.
- * For a list of all possible Elements, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $elements = createPluralConstant(Element);
-/**
- * A Familiar specified by name.
- *
- * @category In-game constant
- */
-
-var template_string_$familiar = createSingleConstant(Familiar);
-/**
- * A list of Familiars specified by a comma-separated list of names.
- * For a list of all possible Familiars, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $familiars = createPluralConstant(Familiar);
-/**
- * An Item specified by name.
- *
- * @category In-game constant
- */
-
-var template_string_$item = createSingleConstant(Item);
-/**
- * A list of Items specified by a comma-separated list of names.
- * For a list of all possible Items, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var template_string_$items = createPluralConstant(Item);
-/**
- * A Location specified by name.
- *
- * @category In-game constant
- */
-
-var $location = createSingleConstant(Location);
-/**
- * A list of Locations specified by a comma-separated list of names.
- * For a list of all possible Locations, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $locations = createPluralConstant(Location);
-/**
- * A Monster specified by name.
- *
- * @category In-game constant
- */
-
-var $monster = createSingleConstant(Monster);
-/**
- * A list of Monsters specified by a comma-separated list of names.
- * For a list of all possible Monsters, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $monsters = createPluralConstant(Monster);
-/**
- * A Phylum specified by name.
- *
- * @category In-game constant
- */
-
-var $phylum = createSingleConstant(Phylum);
-/**
- * A list of Phyla specified by a comma-separated list of names.
- * For a list of all possible Phyla, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $phyla = createPluralConstant(Phylum);
-/**
- * A Servant specified by name.
- *
- * @category In-game constant
- */
-
-var $servant = createSingleConstant(Servant);
-/**
- * A list of Servants specified by a comma-separated list of names.
- * For a list of all possible Servants, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $servants = createPluralConstant(Servant);
-/**
- * A Skill specified by name.
- *
- * @category In-game constant
- */
-
-var $skill = createSingleConstant(Skill);
-/**
- * A list of Skills specified by a comma-separated list of names.
- * For a list of all possible Skills, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $skills = createPluralConstant(Skill);
-/**
- * A Slot specified by name.
- *
- * @category In-game constant
- */
-
-var $slot = createSingleConstant(Slot);
-/**
- * A list of Slots specified by a comma-separated list of names.
- * For a list of all possible Slots, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $slots = createPluralConstant(Slot);
-/**
- * A Stat specified by name.
- *
- * @category In-game constant
- */
-
-var $stat = createSingleConstant(Stat);
-/**
- * A list of Stats specified by a comma-separated list of names.
- * For a list of all possible Stats, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $stats = createPluralConstant(Stat);
-/**
- * A Thrall specified by name.
- *
- * @category In-game constant
- */
-
-var $thrall = createSingleConstant(Thrall);
-/**
- * A list of Thralls specified by a comma-separated list of names.
- * For a list of all possible Thralls, leave the template string blank.
- *
- * @category In-game constant
- */
-
-var $thralls = createPluralConstant(Thrall);
 // EXTERNAL MODULE: ./node_modules/libram/node_modules/core-js/modules/es.object.entries.js
 var es_object_entries = __webpack_require__(4875);
-// EXTERNAL MODULE: ./node_modules/libram/node_modules/core-js/features/array/flat.js
-var flat = __webpack_require__(2580);
-;// CONCATENATED MODULE: ./node_modules/libram/dist/lib.js
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (typeof call === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-/** @module GeneralLibrary */
-
-
-
-
-
-
-/**
- * Returns the current maximum Accordion Thief songs the player can have in their head
- *
- * @category General
- */
-
-function getSongLimit() {
-  return 3 + (booleanModifier("Four Songs") ? 1 : 0) + numericModifier("Additional Song");
-}
-/**
- * Return whether the Skill or Effect provided is an Accordion Thief song
- *
- * @category General
- * @param skillOrEffect The Skill or Effect
- */
-
-function isSong(skillOrEffect) {
-  if (skillOrEffect instanceof Effect && skillOrEffect.attributes.includes("song")) {
-    return true;
-  } else {
-    var skill = skillOrEffect instanceof Effect ? toSkill(skillOrEffect) : skillOrEffect;
-    return skill.class === $class(_templateObject || (_templateObject = _taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff;
-  }
-}
-/**
- * List all active Effects
- *
- * @category General
- */
-
-function getActiveEffects() {
-  return Object.keys(myEffects()).map(e => Effect.get(e));
-}
-/**
- * List currently active Accordion Thief songs
- *
- * @category General
- */
-
-function getActiveSongs() {
-  return getActiveEffects().filter(isSong);
-}
-/**
- * List number of active Accordion Thief songs
- *
- * @category General
- */
-
-function getSongCount() {
-  return getActiveSongs().length;
-}
-/**
- * Returns true if the player can remember another Accordion Thief song
- *
- * @category General
- * @param quantity Number of songs to test the space for
- */
-
-function canRememberSong() {
-  var quantity = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  return getSongLimit() - getSongCount() >= quantity;
-}
-/**
- * Return the locations in which the given monster can be encountered naturally
- *
- * @category General
- * @param monster Monster to find
- */
-
-function getMonsterLocations(monster) {
-  return Location.all().filter(location => monster.name in appearanceRates(location));
-}
-/**
- * Return the player's remaining liver space
- *
- * @category General
- */
-
-function getRemainingLiver() {
-  return inebrietyLimit() - myInebriety();
-}
-/**
- * Return the player's remaining stomach space
- *
- * @category General
- */
-
-function getRemainingStomach() {
-  return fullnessLimit() - myFullness();
-}
-/**
- * Return the player's remaining spleen space
- *
- * @category General
- */
-
-function getRemainingSpleen() {
-  return spleenLimit() - mySpleenUse();
-}
-/**
- * Return whether the player "has" any entity which one could feasibly "have".
- *
- * @category General
- * @param thing Thing to check
- * @param quantity Number to check that the player has
- */
-
-function have(thing) {
-  var quantity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
-  if (thing instanceof Effect) {
-    return (0,external_kolmafia_namespaceObject.haveEffect)(thing) >= quantity;
-  }
-
-  if (thing instanceof Familiar) {
-    return (0,external_kolmafia_namespaceObject.haveFamiliar)(thing);
-  }
-
-  if (thing instanceof Item) {
-    return (0,external_kolmafia_namespaceObject.availableAmount)(thing) >= quantity;
-  }
-
-  if (thing instanceof Servant) {
-    return (0,external_kolmafia_namespaceObject.haveServant)(thing);
-  }
-
-  if (thing instanceof Skill) {
-    return (0,external_kolmafia_namespaceObject.haveSkill)(thing);
-  }
-
-  if (thing instanceof Thrall) {
-    var thrall = (0,external_kolmafia_namespaceObject.myThrall)();
-    return thrall.id === thing.id && thrall.level >= quantity;
-  }
-
-  return false;
-}
-/**
- * Return whether an item is in the player's campground
- *
- * @category General
- * @param item The item mafia uses to represent the campground item
- */
-
-function haveInCampground(item) {
-  return Object.keys(getCampground()).map(i => Item.get(i)).includes(item);
-}
-var Wanderer;
-
-(function (Wanderer) {
-  Wanderer["Digitize"] = "Digitize Monster";
-  Wanderer["Enamorang"] = "Enamorang Monster";
-  Wanderer["Familiar"] = "Familiar";
-  Wanderer["Holiday"] = "Holiday Monster";
-  Wanderer["Kramco"] = "Kramco";
-  Wanderer["Nemesis"] = "Nemesis Assassin";
-  Wanderer["Portscan"] = "portscan.edu";
-  Wanderer["Romantic"] = "Romantic Monster";
-  Wanderer["Vote"] = "Vote Monster";
-})(Wanderer || (Wanderer = {}));
-
-var deterministicWanderers = [Wanderer.Digitize, Wanderer.Portscan];
-/**
- * Return whether the player has the queried counter
- *
- * @category General
- */
-
-function haveCounter(counterName) {
-  var minTurns = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  var maxTurns = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
-  return getCounters(counterName, minTurns, maxTurns) === counterName;
-}
-/**
- * Return whether the player has the queried wandering counter
- *
- * @category Wanderers
- */
-
-function haveWandererCounter(wanderer) {
-  if (deterministicWanderers.includes(wanderer)) {
-    return haveCounter(wanderer);
-  }
-
-  var begin = wanderer + " window begin";
-  var end = wanderer + " window end";
-  return haveCounter(begin) || haveCounter(end);
-}
-/**
- * Returns whether the player will encounter a vote wanderer on the next turn,
- * providing an "I Voted!" sticker is equipped.
- *
- * @category Wanderers
- */
-
-function isVoteWandererNow() {
-  return totalTurnsPlayed() % 11 == 1;
-}
-/**
- * Tells us whether we can expect a given wanderer now. Behaves differently
- * for different types of wanderer.
- *
- * - For deterministic wanderers, return whether the player will encounter
- *   the queried wanderer on the next turn
- *
- * - For variable wanderers (window), return whether the player is within
- *   an encounter window for the queried wanderer
- *
- * - For variable wanderers (chance per turn), returns true unless the player
- *   has exhausted the number of wanderers possible
- *
- * @category Wanderers
- * @param wanderer Wanderer to check
- */
-
-function isWandererNow(wanderer) {
-  if (deterministicWanderers.includes(wanderer)) {
-    return haveCounter(wanderer, 0, 0);
-  }
-
-  if (wanderer == Wanderer.Kramco) {
-    return true;
-  }
-
-  if (wanderer === Wanderer.Vote) {
-    return isVoteWandererNow();
-  }
-
-  if (wanderer === Wanderer.Familiar) {
-    return get("_hipsterAdv") < 7;
-  }
-
-  var begin = wanderer + " window begin";
-  var end = wanderer + " window end";
-  return !haveCounter(begin, 1) && haveCounter(end);
-}
-/**
- * Returns the float chance the player will encounter a sausage goblin on the
- * next turn, providing the Kramco Sausage-o-Matic is equipped.
- *
- * @category Wanderers
- */
-
-function getKramcoWandererChance() {
-  var fights = get("_sausageFights");
-  var lastFight = get("_lastSausageMonsterTurn");
-  var totalTurns = totalTurnsPlayed();
-
-  if (fights < 1) {
-    return lastFight === totalTurns && myTurncount() < 1 ? 0.5 : 1.0;
-  }
-
-  var turnsSinceLastFight = totalTurns - lastFight;
-  return Math.min(1.0, (turnsSinceLastFight + 1) / (5 + fights * 3 + Math.pow(Math.max(0, fights - 5), 3)));
-}
-/**
- * Returns the float chance the player will encounter an Artistic Goth Kid or
- * Mini-Hipster wanderer on the next turn, providing a familiar is equipped.
- *
- * NOTE: You must complete one combat with the Artistic Goth Kid before you
- * can encounter any wanderers. Consequently,ƒ the first combat with the
- * Artist Goth Kid is effectively 0% chance to encounter a wanderer.
- *
- * @category Wanderers
- */
-
-function getFamiliarWandererChance() {
-  var totalFights = get("_hipsterAdv");
-  var probability = [0.5, 0.4, 0.3, 0.2];
-
-  if (totalFights < 4) {
-    return probability[totalFights];
-  }
-
-  return totalFights > 7 ? 0.0 : 0.1;
-}
-/**
- * Returns the float chance the player will encounter the queried wanderer
- * on the next turn.
- *
- * @category Wanderers
- * @param wanderer Wanderer to check
- */
-
-function getWandererChance(wanderer) {
-  if (deterministicWanderers.includes(wanderer)) {
-    return haveCounter(wanderer, 0, 0) ? 1.0 : 0.0;
-  }
-
-  if (wanderer === Wanderer.Kramco) {
-    getKramcoWandererChance();
-  }
-
-  if (wanderer === Wanderer.Vote) {
-    return isVoteWandererNow() ? 1.0 : 0.0;
-  }
-
-  if (wanderer === Wanderer.Familiar) {
-    getFamiliarWandererChance();
-  }
-
-  var begin = wanderer + " window begin";
-  var end = wanderer + " window end";
-
-  if (haveCounter(begin, 1, 100)) {
-    return 0.0;
-  }
-
-  var counters = get("relayCounters");
-  var re = new RegExp("(\\d+):" + end);
-  var matches = counters.match(re);
-
-  if (matches && matches.length === 2) {
-    var window = Number.parseInt(matches[1]) - myTurncount();
-    return 1.0 / window;
-  }
-
-  return 0.0;
-}
-/**
- * Returns true if the player's current familiar is equal to the one supplied
- *
- * @category General
- * @param familiar Familiar to check
- */
-
-function isCurrentFamiliar(familiar) {
-  return myFamiliar() === familiar;
-}
-/**
- * Returns the fold group (if any) of which the given item is a part
- *
- * @category General
- * @param item Item that is part of the required fold group
- */
-
-function getFoldGroup(item) {
-  return Object.entries(getRelated(item, "fold")).sort((_ref, _ref2) => {
-    var _ref3 = _slicedToArray(_ref, 2),
-        a = _ref3[1];
-
-    var _ref4 = _slicedToArray(_ref2, 2),
-        b = _ref4[1];
-
-    return a - b;
-  }).map(_ref5 => {
-    var _ref6 = _slicedToArray(_ref5, 1),
-        i = _ref6[0];
-
-    return Item.get(i);
-  });
-}
-/**
- * Returns the zap group (if any) of which the given item is a part
- *
- * @category General
- * @param item Item that is part of the required zap group
- */
-
-function getZapGroup(item) {
-  return Object.keys(getRelated(item, "zap")).map(i => Item.get(i));
-}
-/**
- * Get a map of banished monsters keyed by what banished them
- *
- * @category General
- */
-
-function getBanishedMonsters() {
-  var banishes = chunk(get("banishedMonsters").split(":"), 3);
-  var result = new Map();
-
-  var _iterator = _createForOfIteratorHelper(banishes),
-      _step;
-
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _step$value = _slicedToArray(_step.value, 2),
-          foe = _step$value[0],
-          banisher = _step$value[1];
-
-      if (foe === undefined || banisher === undefined) break; // toItem doesn"t error if the item doesn"t exist, so we have to use that.
-
-      var banisherItem = toItem(banisher);
-      var banisherObject = [Item.get("none"), null].includes(banisherItem) ? Skill.get(banisher) : banisherItem;
-      result.set(banisherObject, Monster.get(foe));
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-
-  return result;
-}
-/**
- * Returns true if the item is usable
- *
- * This function will be an ongoing work in progress
- *
- * @param item Item to check
- */
-
-function canUse(item) {
-  var path = myPath();
-
-  if (path !== "Nuclear Autumn") {
-    if ($items(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Shrieking Weasel holo-record, Power-Guy 2000 holo-record, Lucky Strikes holo-record, EMD holo-record, Superdrifter holo-record, The Pigs holo-record, Drunk Uncles holo-record"]))).includes(item)) {
-      return false;
-    }
-  }
-
-  if (path === "G-Lover") {
-    if (!item.name.toLowerCase().includes("g")) return false;
-  }
-
-  if (path === "Bees Hate You") {
-    if (item.name.toLowerCase().includes("b")) return false;
-  }
-
-  return true;
-}
-/**
- * Turn KoLmafia `none`s to JavaScript `null`s
- *
- * @param thing Thing that can have a mafia "none" value
- */
-
-function noneToNull(thing) {
-  if (thing instanceof Effect) {
-    return thing === Effect.get("none") ? null : thing;
-  }
-
-  if (thing instanceof Familiar) {
-    return thing === Familiar.get("none") ? null : thing;
-  }
-
-  if (thing instanceof Item) {
-    return thing === Item.get("none") ? null : thing;
-  }
-
-  return thing;
-}
-/**
- * Return the average value from the sort of range that KoLmafia encodes as a string
- *
- * @param range KoLmafia-style range string
- */
-
-function getAverage(range) {
-  var _range$match;
-
-  if (range.indexOf("-") < 0) return Number(range);
-
-  var _ref7 = (_range$match = range.match(/(-?[0-9]+)-(-?[0-9]+)/)) !== null && _range$match !== void 0 ? _range$match : ["0", "0", "0"],
-      _ref8 = _slicedToArray(_ref7, 3),
-      lower = _ref8[1],
-      upper = _ref8[2];
-
-  return (Number(lower) + Number(upper)) / 2;
-}
-/**
- * Return average adventures expected from consuming an item
- *
- * If item is not a consumable, will just return "0".
- *
- * @param item Consumable item
- */
-
-function getAverageAdventures(item) {
-  return getAverage(item.adventures);
-}
-/**
- * Remove an effect
- *
- * @category General
- * @param effect Effect to remove
- */
-
-function uneffect(effect) {
-  return cliExecute("uneffect ".concat(effect.name));
-}
-/**
- * Get both the name and id of a player from either their name or id
- *
- * @param idOrName Id or name of player
- * @returns Object containing id and name of player
- */
-
-function getPlayerFromIdOrName(idOrName) {
-  var id = typeof idOrName === "number" ? idOrName : parseInt(getPlayerId(idOrName));
-  return {
-    name: getPlayerName(id),
-    id: id
-  };
-}
-/**
- * Return the step as a number for a given quest property.
- *
- * @param questName Name of quest property to check.
- */
-
-function questStep(questName) {
-  var stringStep = get(questName);
-  if (stringStep === "unstarted") return -1;else if (stringStep === "started") return 0;else if (stringStep === "finished" || stringStep === "") return 999;else {
-    if (stringStep.substring(0, 4) !== "step") {
-      throw new Error("Quest state parsing error.");
-    }
-
-    return parseInt(stringStep.substring(4), 10);
-  }
-}
-var EnsureError = /*#__PURE__*/function (_Error) {
-  _inherits(EnsureError, _Error);
-
-  var _super = _createSuper(EnsureError);
-
-  function EnsureError(cause) {
-    var _this;
-
-    _classCallCheck(this, EnsureError);
-
-    _this = _super.call(this, "Failed to ensure ".concat(cause.name, "!"));
-    _this.name = "Ensure Error";
-    return _this;
-  }
-
-  return EnsureError;
-}( /*#__PURE__*/_wrapNativeSuper(Error));
-/**
- * Tries to get an effect using the default method
- * @param ef effect to try to get
- * @param turns turns to aim for; default of 1
- */
-
-function ensureEffect(ef) {
-  var turns = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
-  if (haveEffect(ef) < turns) {
-    if (!cliExecute(ef.default) || haveEffect(ef) === 0) {
-      throw new EnsureError(ef);
-    }
-  }
-}
-var valueMap = new Map();
-var MALL_VALUE_MODIFIER = 0.9;
-/**
- * Returns the average value--based on mallprice and autosell--of a collection of items
- * @param items items whose value you care about
- */
-
-function getSaleValue() {
-  for (var _len = arguments.length, items = new Array(_len), _key = 0; _key < _len; _key++) {
-    items[_key] = arguments[_key];
-  }
-
-  return items.map(item => {
-    if (valueMap.has(item)) return valueMap.get(item) || 0;
-
-    if (item.discardable) {
-      valueMap.set(item, mallPrice(item) > Math.max(2 * autosellPrice(item), 100) ? MALL_VALUE_MODIFIER * mallPrice(item) : autosellPrice(item));
-    } else {
-      valueMap.set(item, mallPrice(item) > 100 ? MALL_VALUE_MODIFIER * mallPrice(item) : 0);
-    }
-
-    return valueMap.get(item) || 0;
-  }).reduce((s, price) => s + price, 0) / items.length;
-}
-var Environment = {
-  Outdoor: "outdoor",
-  Indoor: "indoor",
-  Underground: "underground",
-  Underwater: "underwater"
-};
-/**
- * Returns the weight-coefficient of any leprechaunning that this familiar may find itself doing
- * Assumes the familiar is nude and thus fails for hatrack & pantsrack
- * For the Mutant Cactus Bud, returns the efficacy-multiplier instead
- * @param familiar The familiar whose leprechaun multiplier you're interested in
- */
-
-function findLeprechaunMultiplier(familiar) {
-  if (familiar === $familiar(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["Mutant Cactus Bud"])))) return numericModifier(familiar, "Leprechaun Effectiveness", 1, $item(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["none"]))));
-  var meatBonus = numericModifier(familiar, "Meat Drop", 1, $item(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["none"]))));
-  if (meatBonus === 0) return 0;
-  return Math.pow(Math.sqrt(meatBonus / 2 + 55 / 4 + 3) - Math.sqrt(55) / 2, 2);
-}
-/**
- * Returns the weight-coefficient of any baby gravy fairying that this familiar may find itself doing
- * Assumes the familiar is nude and thus fails for hatrack & pantsrack
- * For the Mutant Fire Ant, returns the efficacy-multiplier instead
- * @param familiar The familiar whose fairy multiplier you're interested in
- */
-
-function findFairyMultiplier(familiar) {
-  if (familiar === $familiar(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Mutant Fire Ant"])))) return numericModifier(familiar, "Fairy Effectiveness", 1, $item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["none"]))));
-  var itemBonus = numericModifier(familiar, "Item Drop", 1, $item(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["none"]))));
-  if (itemBonus === 0) return 0;
-  return Math.pow(Math.sqrt(itemBonus + 55 / 4 + 3) - Math.sqrt(55) / 2, 2);
-}
-var holidayWanderers = new Map([["El Dia De Los Muertos Borrachos", $monsters(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["Novia Cad\xE1ver, Novio Cad\xE1ver, Padre Cad\xE1ver, Persona Inocente Cad\xE1ver"])))], ["Feast of Boris", $monsters(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["Candied Yam Golem, Malevolent Tofurkey, Possessed Can of Cranberry Sauce, Stuffing Golem"])))], ["Talk Like a Pirate Day", $monsters(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["ambulatory pirate, migratory pirate, peripatetic pirate"])))]]);
-function getTodaysHolidayWanderers() {
-  return holiday().split("/").map(holiday => {
-    var _holidayWanderers$get;
-
-    return (_holidayWanderers$get = holidayWanderers.get(holiday)) !== null && _holidayWanderers$get !== void 0 ? _holidayWanderers$get : [];
-  }).flat();
-}
 // EXTERNAL MODULE: ./node_modules/libram/node_modules/core-js/modules/es.object.from-entries.js
 var es_object_from_entries = __webpack_require__(8819);
 ;// CONCATENATED MODULE: ./node_modules/libram/dist/propertyTyping.js
@@ -2720,7 +1465,7 @@ function isPhylumProperty(property) {
   return phylumProps.includes(property) || property.endsWith("Phylum");
 }
 ;// CONCATENATED MODULE: ./node_modules/libram/dist/property.js
-function property_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -2728,17 +1473,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function property_slicedToArray(arr, i) { return property_arrayWithHoles(arr) || property_iterableToArrayLimit(arr, i) || property_unsupportedIterableToArray(arr, i) || property_nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function property_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function property_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return property_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return property_arrayLikeToArray(o, minLen); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function property_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function property_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function property_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -2780,7 +1525,7 @@ var getSkill = createMafiaClassPropertyGetter(Skill);
 var getSlot = createMafiaClassPropertyGetter(Slot);
 var getStat = createMafiaClassPropertyGetter(Stat);
 var getThrall = createMafiaClassPropertyGetter(Thrall);
-function property_get(property, _default) {
+function get(property, _default) {
   var value = getString(property);
 
   if (isMonsterProperty(property)) {
@@ -2818,7 +1563,7 @@ function _set(property, value) {
 
 function setProperties(properties) {
   for (var _i = 0, _Object$entries = Object.entries(properties); _i < _Object$entries.length; _i++) {
-    var _Object$entries$_i = property_slicedToArray(_Object$entries[_i], 2),
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
         prop = _Object$entries$_i[0],
         value = _Object$entries$_i[1];
 
@@ -2827,10 +1572,10 @@ function setProperties(properties) {
 }
 function withProperties(properties, callback) {
   var propertiesBackup = Object.fromEntries(Object.entries(properties).map(_ref => {
-    var _ref2 = property_slicedToArray(_ref, 1),
+    var _ref2 = _slicedToArray(_ref, 1),
         prop = _ref2[0];
 
-    return [prop, property_get(prop)];
+    return [prop, get(prop)];
   }));
   setProperties(properties);
 
@@ -2845,7 +1590,7 @@ function withProperty(property, value, callback) {
 }
 function withChoices(choices, callback) {
   var properties = Object.fromEntries(Object.entries(choices).map(_ref3 => {
-    var _ref4 = property_slicedToArray(_ref3, 2),
+    var _ref4 = _slicedToArray(_ref3, 2),
         choice = _ref4[0],
         option = _ref4[1];
 
@@ -2858,7 +1603,7 @@ function withChoice(choice, value, callback) {
 }
 var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null && (function () {
   function PropertiesManager() {
-    property_classCallCheck(this, PropertiesManager);
+    _classCallCheck(this, PropertiesManager);
 
     _defineProperty(this, "properties", {});
   }
@@ -2877,12 +1622,12 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
     key: "set",
     value: function set(propertiesToSet) {
       for (var _i2 = 0, _Object$entries2 = Object.entries(propertiesToSet); _i2 < _Object$entries2.length; _i2++) {
-        var _Object$entries2$_i = property_slicedToArray(_Object$entries2[_i2], 2),
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
             propertyName = _Object$entries2$_i[0],
             propertyValue = _Object$entries2$_i[1];
 
         if (this.properties[propertyName] === undefined) {
-          this.properties[propertyName] = property_get(propertyName);
+          this.properties[propertyName] = get(propertyName);
         }
 
         _set(propertyName, propertyValue);
@@ -2897,7 +1642,7 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
     key: "setChoices",
     value: function setChoices(choicesToSet) {
       this.set(Object.fromEntries(Object.entries(choicesToSet).map(_ref5 => {
-        var _ref6 = property_slicedToArray(_ref5, 2),
+        var _ref6 = _slicedToArray(_ref5, 2),
             choiceNumber = _ref6[0],
             choiceValue = _ref6[1];
 
@@ -2933,7 +1678,7 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
     key: "resetAll",
     value: function resetAll() {
       Object.entries(this.properties).forEach(_ref7 => {
-        var _ref8 = property_slicedToArray(_ref7, 2),
+        var _ref8 = _slicedToArray(_ref7, 2),
             propertyName = _ref8[0],
             propertyValue = _ref8[1];
 
@@ -2979,7 +1724,7 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
   }, {
     key: "setMinimumValue",
     value: function setMinimumValue(property, value) {
-      if (property_get(property) < value) {
+      if (get(property) < value) {
         this.set(_defineProperty({}, property, value));
         return true;
       }
@@ -2996,7 +1741,7 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
   }, {
     key: "setMaximumValue",
     value: function setMaximumValue(property, value) {
-      if (property_get(property) > value) {
+      if (get(property) > value) {
         this.set(_defineProperty({}, property, value));
         return true;
       }
@@ -3061,11 +1806,6 @@ export function createConditionalButton(
 }
 */
 ;// CONCATENATED MODULE: ./src/main.ts
-var main_templateObject, main_templateObject2, main_templateObject3, main_templateObject4, main_templateObject5, main_templateObject6, main_templateObject7, main_templateObject8;
-
-function main_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-
 
 
  // link this script's css sheet
@@ -3085,20 +1825,20 @@ var greenBoxButton = createNewButton("Check yo boxen", "cc_snapshot", "familiar2
 
 var breakfastButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myInebriety)() === 0 && (0,external_kolmafia_namespaceObject.myFullness)() === 0 && property_get("_unaccompaniedMinerUsed") === 0) {
+if ((0,external_kolmafia_namespaceObject.myInebriety)() === 0 && (0,external_kolmafia_namespaceObject.myFullness)() === 0 && !get("_cargoPocketEmptied")) {
   breakfastButton = createNewButton("Breakfast time!", "mannyBreakfast", "coffeecup");
 }
 
-var preLoop = "";
+var csGashHop = "";
 
-if ((0,external_kolmafia_namespaceObject.myAdventures)() < 5 && (0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.getWorkshed)() !== template_string_$item(main_templateObject || (main_templateObject = main_taggedTemplateLiteral(["little geneticist dna-splicing lab"])))) {
-  preLoop = createNewButton("Get sorted for looping", "hccsPre", "syringe3");
+if ((0,external_kolmafia_namespaceObject.myAdventures)() < 5 && (0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.pvpAttacksLeft)() === 0) {
+  csGashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
 }
 
-var gashHop = "";
+var casualHop = "";
 
-if ((0,external_kolmafia_namespaceObject.myAdventures)() < 5 && (0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.getWorkshed)() === template_string_$item(main_templateObject2 || (main_templateObject2 = main_taggedTemplateLiteral(["little geneticist dna-splicing lab"])))) {
-  gashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
+if ((0,external_kolmafia_namespaceObject.myAdventures)() < 5 && (0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.pvpAttacksLeft)() === 0 && get("csServicesPerformed")) {
+  casualHop = createNewButton("Dirty Casual Time", "casAscend", "beanbag");
 }
 
 var loopButton = "";
@@ -3109,7 +1849,7 @@ if ((0,external_kolmafia_namespaceObject.myPathId)() === 25) {
 
 var postloopButton = "";
 
-if (property_get("breakfastCompleted") === false && (0,external_kolmafia_namespaceObject.myInebriety)() > 2 && (0,external_kolmafia_namespaceObject.myPath)() === "None") {
+if (get("breakfastCompleted") === false && (0,external_kolmafia_namespaceObject.myInebriety)() > 2 && (0,external_kolmafia_namespaceObject.myPath)() === "None") {
   postloopButton = createNewButton("Postloop?", "postloop", "volcoino");
 }
 
@@ -3128,7 +1868,7 @@ if ((0,external_kolmafia_namespaceObject.myPath)() === "None" && (0,external_kol
 var pvpButton = "";
 
 if ((0,external_kolmafia_namespaceObject.pvpAttacksLeft)() > 0) {
-  pvpButton = createNewButton("Round 1, FIGHT!", "UberPVPOptimizer; pvp loot nice list", "swords");
+  pvpButton = createNewButton("Round 1, FIGHT!", "outfit birthday suit; pvp loot barely dressed", "swords");
 }
 
 var garboCheckButton = "";
@@ -3147,43 +1887,20 @@ if ((0,external_kolmafia_namespaceObject.myTurncount)() > 0) {
   }
 }
 
-var garboPulls = "";
-
-if (!have(template_string_$item(main_templateObject3 || (main_templateObject3 = main_taggedTemplateLiteral(["pantsgiving"])))) || !have(template_string_$item(main_templateObject4 || (main_templateObject4 = main_taggedTemplateLiteral(["haiku katana"])))) || !have(template_string_$item(main_templateObject5 || (main_templateObject5 = main_taggedTemplateLiteral(["spooky putty sheet"]))))) {
-  garboPulls = createNewButton("Pull From AfH Stash", "/afh; stash take pantsgiving; stash take haiku katana; stash take spooky putty sheet", "sputtysheet");
-} else if (have(template_string_$item(main_templateObject6 || (main_templateObject6 = main_taggedTemplateLiteral(["pantsgiving"])))) || have(template_string_$item(main_templateObject7 || (main_templateObject7 = main_taggedTemplateLiteral(["haiku katana"])))) || have(template_string_$item(main_templateObject8 || (main_templateObject8 = main_taggedTemplateLiteral(["spooky putty sheet"]))))) {
-  garboPulls = createNewButton("Return to AfH Stash", "/afh; stash put pantsgiving; stash put haiku katana; stash put spooky putty sheet", "sputtysheet");
-}
-
 var buttons = [];
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
-buttons.push(preLoop);
-buttons.push(gashHop);
+buttons.push(csGashHop);
+buttons.push(casualHop);
 buttons.push(loopButton);
 buttons.push(greenBoxButton);
 buttons.push(autoscendButton);
 buttons.push(rolloverButton);
 buttons.push(pvpButton);
 buttons.push(garboCheckButton);
-buttons.push(garboPulls);
 buttons.push(garboButton);
 var borderBoxStart = '<center><div id="mannyScriptsBox"><table  width=95%  cellspacing=0 cellpadding=0><tr><td style="color: white;" align=center bgcolor=green><b>Good Morning, Manny, what would you like to do today?</b></td></tr><tr><td style="padding: 5px; border: 1px solid green;"><center><div>';
-var borderBoxEnd = "</div></center></table></div></center>"; // TODO: drop all buttons in an array, iterate through the array to string them together
-// buttons.toString();
-
-/*
-let scriptBox = borderBoxStart;
-scriptBox = scriptBox.concat(gashHop);
-scriptBox = scriptBox.concat(loopButton);
-scriptBox = scriptBox.concat(postloopButton);
-// scriptBox = scriptBox.concat(buttons.toString());
-scriptBox = scriptBox.concat(greenBoxButton);
-scriptBox = scriptBox.concat(breakfastButton);
-scriptBox = scriptBox.concat(borderBoxEnd);
-*/
-// have a param for the button add, based on pref or whatever
-
+var borderBoxEnd = "</div></center></table></div></center>";
 var newScriptBox = borderBoxStart;
 buttons.forEach(element => {
   newScriptBox = newScriptBox.concat(element);

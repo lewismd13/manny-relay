@@ -1,4 +1,5 @@
 import { print, visitUrl } from "kolmafia";
+import { createNewButton } from "./mannyRelayLib";
 // import { uniq } from "lodash";
 /*
 const getTurns = /\((\d+) turns?\)/gm;
@@ -160,3 +161,4 @@ for (const player of playerTable.keys()) {
   print(`${player} gets ${s} sliders`);
 }
 */
+print(`${createNewButton("Run garbo!", "garbo", "parkGarbage")}`);

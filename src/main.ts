@@ -1,6 +1,4 @@
 import {
-  availableAmount,
-  getWorkshed,
   indexOf,
   inebrietyLimit,
   myAdventures,
@@ -14,7 +12,6 @@ import {
   visitUrl,
   write,
 } from "kolmafia";
-import { $item, have } from "libram";
 import { get } from "libram/dist/property";
 import { createNewButton } from "./mannyRelayLib";
 
@@ -36,27 +33,25 @@ const greenBoxButton = createNewButton("Check yo boxen", "cc_snapshot", "familia
 
 let breakfastButton = "";
 
-if (myInebriety() === 0 && myFullness() === 0 && get("_unaccompaniedMinerUsed") === 0) {
+if (myInebriety() === 0 && myFullness() === 0 && !get("_cargoPocketEmptied")) {
   breakfastButton = createNewButton("Breakfast time!", "mannyBreakfast", "coffeecup");
 }
 
-let preLoop = "";
+let csGashHop = "";
 
-if (
-  myAdventures() < 5 &&
-  myInebriety() > inebrietyLimit() &&
-  getWorkshed() !== $item`little geneticist dna-splicing lab`
-) {
-  preLoop = createNewButton("Get sorted for looping", "hccsPre", "syringe3");
+if (myAdventures() < 5 && myInebriety() > inebrietyLimit() && pvpAttacksLeft() === 0) {
+  csGashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
 }
-let gashHop = "";
+
+let casualHop = "";
 
 if (
   myAdventures() < 5 &&
   myInebriety() > inebrietyLimit() &&
-  getWorkshed() === $item`little geneticist dna-splicing lab`
+  pvpAttacksLeft() === 0 &&
+  get("csServicesPerformed")
 ) {
-  gashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
+  casualHop = createNewButton("Dirty Casual Time", "casAscend", "beanbag");
 }
 
 let loopButton = "";
@@ -83,7 +78,11 @@ if (myPath() === "None" && myInebriety() >= inebrietyLimit() && myAdventures() <
 let pvpButton = "";
 
 if (pvpAttacksLeft() > 0) {
-  pvpButton = createNewButton("Round 1, FIGHT!", "UberPVPOptimizer; pvp loot nice list", "swords");
+  pvpButton = createNewButton(
+    "Round 1, FIGHT!",
+    "outfit birthday suit; pvp loot barely dressed",
+    "swords"
+  );
 }
 
 let garboCheckButton = "";
@@ -101,58 +100,23 @@ if (myTurncount() > 0) {
   }
 }
 
-let garboPulls = "";
-if (!have($item`pantsgiving`) || !have($item`haiku katana`) || !have($item`spooky putty sheet`)) {
-  garboPulls = createNewButton(
-    "Pull From AfH Stash",
-    "/afh; stash take pantsgiving; stash take haiku katana; stash take spooky putty sheet",
-    "sputtysheet"
-  );
-} else if (
-  have($item`pantsgiving`) ||
-  have($item`haiku katana`) ||
-  have($item`spooky putty sheet`)
-) {
-  garboPulls = createNewButton(
-    "Return to AfH Stash",
-    "/afh; stash put pantsgiving; stash put haiku katana; stash put spooky putty sheet",
-    "sputtysheet"
-  );
-}
-
 const buttons = [];
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
-buttons.push(preLoop);
-buttons.push(gashHop);
+buttons.push(csGashHop);
+buttons.push(casualHop);
 buttons.push(loopButton);
 buttons.push(greenBoxButton);
 buttons.push(autoscendButton);
 buttons.push(rolloverButton);
 buttons.push(pvpButton);
 buttons.push(garboCheckButton);
-buttons.push(garboPulls);
 buttons.push(garboButton);
 
 const borderBoxStart =
   '<center><div id="mannyScriptsBox"><table  width=95%  cellspacing=0 cellpadding=0><tr><td style="color: white;" align=center bgcolor=green><b>Good Morning, Manny, what would you like to do today?</b></td></tr><tr><td style="padding: 5px; border: 1px solid green;"><center><div>';
 
 const borderBoxEnd = "</div></center></table></div></center>";
-
-// TODO: drop all buttons in an array, iterate through the array to string them together
-
-// buttons.toString();
-/*
-let scriptBox = borderBoxStart;
-scriptBox = scriptBox.concat(gashHop);
-scriptBox = scriptBox.concat(loopButton);
-scriptBox = scriptBox.concat(postloopButton);
-// scriptBox = scriptBox.concat(buttons.toString());
-scriptBox = scriptBox.concat(greenBoxButton);
-scriptBox = scriptBox.concat(breakfastButton);
-scriptBox = scriptBox.concat(borderBoxEnd);
-*/
-// have a param for the button add, based on pref or whatever
 
 let newScriptBox = borderBoxStart;
 
