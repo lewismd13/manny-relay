@@ -18,23 +18,13 @@ import { createNewButton } from "./mannyRelayLib";
 // link this script's css sheet
 const cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
 
-// let buttons: string[];
-/*
-const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-
-buttons.push[createNewButton("Check yo boxen", "cc_snapshot", "familiar25")];
-*/
-// const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-// buttons.push(ballsButton);
 const greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25");
-
-// buttons.push(greenBoxButton);
 
 // TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
 
 let breakfastButton = "";
 
-if (myInebriety() === 0 && myFullness() === 0 && !get("_cargoPocketEmptied")) {
+if (myInebriety() === 0 && myFullness() === 0 && get("_saberMod") !== 0) {
   breakfastButton = createNewButton("Breakfast time!", "mannyBreakfast", "coffeecup");
 }
 
@@ -73,7 +63,7 @@ if (myPath() === $path`standard`) {
 }
 
 let rolloverButton = "";
-if (myPath() === $path`none` && myInebriety() >= inebrietyLimit() && myAdventures() < 20) {
+if (myPath() === $path`none` && myInebriety() >= inebrietyLimit()) {
   rolloverButton = createNewButton("Put on those PJs", "mannyRoll", "nicewatch");
 }
 
@@ -88,7 +78,7 @@ if (pvpAttacksLeft() > 0) {
 }
 
 let garboButton = "";
-if (myAdventures() > 0) {
+if (myAdventures() > 0 && myInebriety() <= inebrietyLimit()) {
   if (myDaycount() === 2) {
     garboButton = createNewButton(
       "Run garbo ascend nobarf!",
@@ -102,11 +92,7 @@ if (myAdventures() > 0) {
 
 let overdrinkButton = "";
 if (myPath() === $path`none` && myInebriety() === inebrietyLimit() && myAdventures() === 0) {
-  if (myDaycount() === 2 && !get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  } else if (myDaycount() === 1 && get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  }
+  overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
 }
 
 let baggoButton = "";
@@ -115,7 +101,7 @@ if (myFullness() === fullnessLimit() && myAdventures() > 0 && myInebriety() <= i
 }
 
 let fancyFoodButton = "";
-if (myFullness() === 0 && myInebriety() <= 5) {
+if (myFullness() === 0 && myInebriety() === 0) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
