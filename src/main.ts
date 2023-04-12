@@ -1,4 +1,5 @@
 import {
+  fullnessLimit,
   indexOf,
   inebrietyLimit,
   myAdventures,
@@ -6,12 +7,11 @@ import {
   myFullness,
   myInebriety,
   myPath,
-  myPathId,
-  myTurncount,
   pvpAttacksLeft,
   visitUrl,
   write,
 } from "kolmafia";
+import { $path } from "libram";
 import { get } from "libram/dist/property";
 import { createNewButton } from "./mannyRelayLib";
 
@@ -26,7 +26,8 @@ buttons.push[createNewButton("Check yo boxen", "cc_snapshot", "familiar25")];
 */
 // const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
 // buttons.push(ballsButton);
-const greenBoxButton = createNewButton("Check yo boxen", "cc_snapshot", "familiar25");
+const greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25");
+
 // buttons.push(greenBoxButton);
 
 // TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
@@ -42,36 +43,37 @@ let csGashHop = "";
 if (myAdventures() < 5 && myInebriety() > inebrietyLimit() && pvpAttacksLeft() === 0) {
   csGashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
 }
-
+/*
 let casualHop = "";
 
 if (
   myAdventures() < 5 &&
   myInebriety() > inebrietyLimit() &&
   pvpAttacksLeft() === 0 &&
-  get("csServicesPerformed")
+  get("csServicesPerformed") &&
+  myDaycount() === 1
 ) {
   casualHop = createNewButton("Dirty Casual Time", "casAscend", "beanbag");
 }
-
+*/
 let loopButton = "";
 
-if (myPathId() === 25) {
+if (myPath() === $path`community service`) {
   loopButton = createNewButton("Initiate Loop!", "mannyLoop", "csplaquesmall");
 }
 
 let postloopButton = "";
-if (get("breakfastCompleted") === false && myInebriety() > 2 && myPath() === "None") {
+if (get("breakfastCompleted") === false && myDaycount() === 1 && myPath() === $path`none`) {
   postloopButton = createNewButton("Postloop?", "postloop", "volcoino");
 }
 
 let autoscendButton = "";
-if (myPath() === "Standard") {
+if (myPath() === $path`standard`) {
   autoscendButton = createNewButton("Initiate autoscend!", "autoscend", "karma");
 }
 
 let rolloverButton = "";
-if (myPath() === "None" && myInebriety() >= inebrietyLimit() && myAdventures() < 50) {
+if (myPath() === $path`none` && myInebriety() >= inebrietyLimit() && myAdventures() < 20) {
   rolloverButton = createNewButton("Put on those PJs", "mannyRoll", "nicewatch");
 }
 
@@ -80,38 +82,57 @@ let pvpButton = "";
 if (pvpAttacksLeft() > 0) {
   pvpButton = createNewButton(
     "Round 1, FIGHT!",
-    "outfit birthday suit; pvp loot barely dressed",
+    "uberpvpoptimizer; pvp loot karmic battle",
     "swords"
   );
 }
 
-let garboCheckButton = "";
-
-if (myAdventures() > 0 && myInebriety() <= inebrietyLimit()) {
-  garboCheckButton = createNewButton("Garbo stashcheck?", "garbocheck", "pantsgiving");
+let garboButton = "";
+if (myAdventures() > 0) {
+  if (myDaycount() === 2) {
+    garboButton = createNewButton(
+      "Run garbo ascend nobarf!",
+      "garbo ascend nobarf workshed=train",
+      "parkGarbage"
+    );
+  } else if (myDaycount() === 1) {
+    garboButton = createNewButton("Run garbo nobarf!", "garbo nobarf", "parkGarbage");
+  }
 }
 
-let garboButton = "";
-if (myTurncount() > 0) {
-  if (myDaycount() === 2) {
-    garboButton = createNewButton("Run garbo ascend!", "garbo ascend", "parkGarbage");
-  } else if (myDaycount() === 1) {
-    garboButton = createNewButton("Run garbo!", "garbo", "parkGarbage");
+let overdrinkButton = "";
+if (myPath() === $path`none` && myInebriety() === inebrietyLimit() && myAdventures() === 0) {
+  if (myDaycount() === 2 && !get("csServicesPerformed")) {
+    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
+  } else if (myDaycount() === 1 && get("csServicesPerformed")) {
+    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
   }
+}
+
+let baggoButton = "";
+if (myFullness() === fullnessLimit() && myAdventures() > 0 && myInebriety() <= inebrietyLimit()) {
+  baggoButton = createNewButton("Baggo me, baby", "baggo olfact=balance", "duffelbag2");
+}
+
+let fancyFoodButton = "";
+if (myFullness() === 0 && myInebriety() <= 5) {
+  fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
 const buttons = [];
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
 buttons.push(csGashHop);
-buttons.push(casualHop);
+// buttons.push(casualHop);
 buttons.push(loopButton);
 buttons.push(greenBoxButton);
+buttons.push(fancyFoodButton);
 buttons.push(autoscendButton);
 buttons.push(rolloverButton);
+buttons.push(overdrinkButton);
 buttons.push(pvpButton);
-buttons.push(garboCheckButton);
 buttons.push(garboButton);
+buttons.push(baggoButton);
 
 const borderBoxStart =
   '<center><div id="mannyScriptsBox"><table  width=95%  cellspacing=0 cellpadding=0><tr><td style="color: white;" align=center bgcolor=green><b>Good Morning, Manny, what would you like to do today?</b></td></tr><tr><td style="padding: 5px; border: 1px solid green;"><center><div>';
