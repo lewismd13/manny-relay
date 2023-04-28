@@ -5,7 +5,6 @@ import {
   myAdventures,
   myDaycount,
   myFullness,
-  myHash,
   myInebriety,
   myPath,
   pvpAttacksLeft,
@@ -14,24 +13,14 @@ import {
 } from "kolmafia";
 import { $path } from "libram";
 import { get } from "libram/dist/property";
-import { createNewButton, createTestButton } from "./mannyRelayLib";
+import {
+  createConditionalButton,
+  createNewButton,
+  cssLink,
+  newbuttonscript,
+} from "./mannyRelayLib";
 
-// link this script's css sheet
-const cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
-
-const newbuttonscript = `<script lang="Javascript"> function myFunction2(command) {  const req = new XMLHttpRequest(); req.open("GET", \`/KoLmafia/submitCommand?cmd=\${command}&pwd=${myHash()}\`); req.send(); } </script>`;
-
-// let buttons: string[];
-/*
-const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-
-buttons.push[createNewButton("Check yo boxen", "cc_snapshot", "familiar25")];
-*/
-// const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-// buttons.push(ballsButton);
 const greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25");
-
-// buttons.push(greenBoxButton);
 
 // TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
 
@@ -46,19 +35,7 @@ let csGashHop = "";
 if (myAdventures() < 5 && myInebriety() > inebrietyLimit() && pvpAttacksLeft() === 0) {
   csGashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
 }
-/*
-let casualHop = "";
 
-if (
-  myAdventures() < 5 &&
-  myInebriety() > inebrietyLimit() &&
-  pvpAttacksLeft() === 0 &&
-  get("csServicesPerformed") &&
-  myDaycount() === 1
-) {
-  casualHop = createNewButton("Dirty Casual Time", "casAscend", "beanbag");
-}
-*/
 let loopButton = "";
 
 if (myPath() === $path`community service`) {
@@ -122,14 +99,23 @@ if (myFullness() === 0 && myInebriety() <= 5) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
-const beldurButton = createTestButton("Beldur is smart", "js myInebriety()", "hamburger");
+function test() {
+  if (myInebriety() > inebrietyLimit()) return true;
+  else return false;
+}
+
+const testbutton = createConditionalButton(
+  "is this thing on?",
+  "js print('hello world')",
+  "catears",
+  test
+);
 
 const buttons = [];
-buttons.push(beldurButton);
+buttons.push(testbutton);
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
 buttons.push(csGashHop);
-// buttons.push(casualHop);
 buttons.push(loopButton);
 buttons.push(greenBoxButton);
 buttons.push(fancyFoodButton);
@@ -158,11 +144,6 @@ function main() {
   const newpage =
     page.slice(0, strStrt) + cssLink + newbuttonscript + newScriptBox + page.slice(strStrt);
   write(newpage);
-  /*
-  if (formField("cmd") !== "") {
-    cliExecute(formField("cmd"));
-  }
-  */
 }
 
 main();

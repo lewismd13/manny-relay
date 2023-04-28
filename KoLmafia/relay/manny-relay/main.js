@@ -2817,78 +2817,18 @@ var PropertiesManager = /*#__PURE__*/(/* unused pure expression or super */ null
 }()));
 ;// CONCATENATED MODULE: ./src/mannyRelayLib.ts
 
-
-function sideCommand(cmd) {
-  var c = "";
-  c = c.concat("'/KoLmafia/specialCommand?cmd=");
-  c = c.concat(urlEncode(cmd));
-  c = c.concat("&pwd=");
-  c = c.concat(myHash());
-  c = c.concat("'");
-  return c;
-}
-
-function mainPaneCommand(cmd) {
-  var c = "";
-  c = c.concat("'main.php?cmd=");
-  c = c.concat(urlEncode(cmd));
-  c = c.concat("'");
-  return c;
-}
-/*
-string mainCommand(string cmd) {
-	buffer c;
-	c.append('/KoLmafia/specialCommand?cmd=');
-	c.append(url_encode(cmd));
-	c.append('&pwd=');
-	c.append(my_hash());
-	// somehow there must be a way to refresh after finishing the command
-	// c.append('&href=http');
-	return c;
-} */
-
-function ajaxCommand(cmd) {
-  var c = "'";
-  c = c.concat("const req = new XMLHttpRequest(); ");
-  c = c.concat('req.open("GET", `/KoLmafia/submitCommand?cmd=');
-  c = c.concat(urlEncode(cmd));
-  c = c.concat('"&pwd=');
-  c = c.concat(myHash());
-  c = c.concat(" req.send();");
-  c = c.concat("'");
-  return c;
-}
-
+var cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
+var newbuttonscript = "<script lang=\"Javascript\"> function myFunction2(command) {  const req = new XMLHttpRequest(); req.open(\"GET\", `/KoLmafia/submitCommand?cmd=${command}&pwd=".concat((0,external_kolmafia_namespaceObject.myHash)(), "`); req.send(); } </script>");
 function createNewButton(label, cmd, img) {
   var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=myFunction2(\"").concat((0,external_kolmafia_namespaceObject.urlEncode)(cmd), "\") > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
   return buttonHtml;
 }
-function createAjaxButton(label, cmd, img) {
-  var generatedCommand = ajaxCommand(cmd);
-  var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=\"").concat(ajaxCommand(cmd), "\" > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
-  return buttonHtml;
-}
-function createTestButton(label, cmd, img) {
-  // const generatedCommand = sideCommand(cmd);
-  var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=myFunction2(\"").concat((0,external_kolmafia_namespaceObject.urlEncode)(cmd), "\") > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
-  return buttonHtml;
-}
-/*
-export function createConditionalButton(
-  label: string,
-  cmd: string,
-  img: string,
-  prop: string
-): string {
-  const generatedCommand = mainPaneCommand(cmd);
-  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick="document.location=${generatedCommand}" > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
-  if (get(prop) !== value) {
-    return "";
-  } else {
+function createConditionalButton(label, cmd, img, condition) {
+  if (condition()) {
+    var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=myFunction2(\"").concat((0,external_kolmafia_namespaceObject.urlEncode)(cmd), "\") > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
     return buttonHtml;
-  }
+  } else return "";
 }
-*/
 ;// CONCATENATED MODULE: ./src/main.ts
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 
@@ -2897,21 +2837,8 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
- // link this script's css sheet
 
-var cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
-var newbuttonscript = "<script lang=\"Javascript\"> function myFunction2(command) {  const req = new XMLHttpRequest(); req.open(\"GET\", `/KoLmafia/submitCommand?cmd=${command}&pwd=".concat((0,external_kolmafia_namespaceObject.myHash)(), "`); req.send(); } </script>"); // let buttons: string[];
-
-/*
-const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-
-buttons.push[createNewButton("Check yo boxen", "cc_snapshot", "familiar25")];
-*/
-// const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-// buttons.push(ballsButton);
-
-var greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25"); // buttons.push(greenBoxButton);
-// TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
+var greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25"); // TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
 
 var breakfastButton = "";
 
@@ -2924,20 +2851,6 @@ var csGashHop = "";
 if ((0,external_kolmafia_namespaceObject.myAdventures)() < 5 && (0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.pvpAttacksLeft)() === 0) {
   csGashHop = createNewButton("Let's jump into that loop", "hccsAscend", "csplaquesmall");
 }
-/*
-let casualHop = "";
-
-if (
-  myAdventures() < 5 &&
-  myInebriety() > inebrietyLimit() &&
-  pvpAttacksLeft() === 0 &&
-  get("csServicesPerformed") &&
-  myDaycount() === 1
-) {
-  casualHop = createNewButton("Dirty Casual Time", "casAscend", "beanbag");
-}
-*/
-
 
 var loopButton = "";
 
@@ -3001,13 +2914,16 @@ if ((0,external_kolmafia_namespaceObject.myFullness)() === 0 && (0,external_kolm
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
-var beldurButton = createTestButton("Beldur is smart", "js myInebriety()", "hamburger");
+function test() {
+  if ((0,external_kolmafia_namespaceObject.myInebriety)() > (0,external_kolmafia_namespaceObject.inebrietyLimit)()) return true;else return false;
+}
+
+var testbutton = createConditionalButton("is this thing on?", "js print('hello world')", "catears", test);
 var buttons = [];
-buttons.push(beldurButton);
+buttons.push(testbutton);
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
-buttons.push(csGashHop); // buttons.push(casualHop);
-
+buttons.push(csGashHop);
 buttons.push(loopButton);
 buttons.push(greenBoxButton);
 buttons.push(fancyFoodButton);
@@ -3030,11 +2946,6 @@ function main() {
   var strStrt = (0,external_kolmafia_namespaceObject.indexOf)(page, "<body>");
   var newpage = page.slice(0, strStrt) + cssLink + newbuttonscript + newScriptBox + page.slice(strStrt);
   (0,external_kolmafia_namespaceObject.write)(newpage);
-  /*
-  if (formField("cmd") !== "") {
-    cliExecute(formField("cmd"));
-  }
-  */
 }
 
 main();
