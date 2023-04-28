@@ -13,7 +13,7 @@ import {
 } from "kolmafia";
 import { $path } from "libram";
 import { get } from "libram/dist/property";
-import { createNewButton } from "./mannyRelayLib";
+import { createAjaxButton, createNewButton } from "./mannyRelayLib";
 
 // link this script's css sheet
 const cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
@@ -24,7 +24,7 @@ const greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familia
 
 let breakfastButton = "";
 
-if (myInebriety() === 0 && myFullness() === 0 && get("_saberMod") !== 0) {
+if (myInebriety() === 0 && myFullness() === 0 && get("_saberMod") === 0) {
   breakfastButton = createNewButton("Breakfast time!", "mannyBreakfast", "coffeecup");
 }
 
@@ -105,7 +105,14 @@ if (myFullness() === 0 && myInebriety() === 0) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
+const beldurButton = createAjaxButton(
+  "Beldur is smart!",
+  "csend holiday fun to beldur",
+  "holidaylog"
+);
+
 const buttons = [];
+// buttons.push(beldurButton);
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
 buttons.push(csGashHop);
@@ -126,7 +133,12 @@ const borderBoxStart =
 const borderBoxEnd = "</div></center></table></div></center>";
 
 let newScriptBox = borderBoxStart;
+/*
+const commandfunction2 = `<script language=Javascript src="/manny-relay/buttoncmd.js"></script>`;
 
+const commandfunction =
+  '<script>  function submitCommand(commandText) {     const req = new XMLHttpRequest();     req.open("GET", `/KoLmafia/submitCommand?cmd=${urlEncode(commandText)}&pwd=${myHash()}`);     req.send(); } </script>';
+*/
 buttons.forEach((element) => {
   newScriptBox = newScriptBox.concat(element);
 });

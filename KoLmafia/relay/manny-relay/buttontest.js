@@ -42,39 +42,27 @@ function mainPaneCommand(cmd) {
   c = c.concat("'");
   return c;
 }
-/*
-string mainCommand(string cmd) {
-	buffer c;
-	c.append('/KoLmafia/specialCommand?cmd=');
-	c.append(url_encode(cmd));
-	c.append('&pwd=');
-	c.append(my_hash());
-	// somehow there must be a way to refresh after finishing the command
-	// c.append('&href=http');
-	return c;
-} */
 
+function newCommand(cmd) {
+  var c = "";
+  c = c.concat("'/KoLmafia/submitCommand?cmd=");
+  c = c.concat(urlEncode(cmd));
+  c = c.concat("&pwd=");
+  c = c.concat(myHash());
+  c = c.concat("'");
+  return c;
+}
+
+function createAjaxButton(label, cmd, img) {
+  var generatedCommand = newCommand(cmd);
+  var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=\"submitCommand(").concat(cmd, ")\" > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
+  return buttonHtml;
+}
 function createNewButton(label, cmd, img) {
   var generatedCommand = sideCommand(cmd);
   var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=\"document.location=").concat(generatedCommand, "; void(0);\" > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
   return buttonHtml;
 }
-/*
-export function createConditionalButton(
-  label: string,
-  cmd: string,
-  img: string,
-  prop: string
-): string {
-  const generatedCommand = mainPaneCommand(cmd);
-  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick="document.location=${generatedCommand}" > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
-  if (get(prop) !== value) {
-    return "";
-  } else {
-    return buttonHtml;
-  }
-}
-*/
 ;// CONCATENATED MODULE: ./src/buttonTest.ts
 
  // import { uniq } from "lodash";

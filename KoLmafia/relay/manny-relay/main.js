@@ -2835,39 +2835,27 @@ function mainPaneCommand(cmd) {
   c = c.concat("'");
   return c;
 }
-/*
-string mainCommand(string cmd) {
-	buffer c;
-	c.append('/KoLmafia/specialCommand?cmd=');
-	c.append(url_encode(cmd));
-	c.append('&pwd=');
-	c.append(my_hash());
-	// somehow there must be a way to refresh after finishing the command
-	// c.append('&href=http');
-	return c;
-} */
 
+function newCommand(cmd) {
+  var c = "";
+  c = c.concat("'/KoLmafia/submitCommand?cmd=");
+  c = c.concat((0,external_kolmafia_namespaceObject.urlEncode)(cmd));
+  c = c.concat("&pwd=");
+  c = c.concat((0,external_kolmafia_namespaceObject.myHash)());
+  c = c.concat("'");
+  return c;
+}
+
+function createAjaxButton(label, cmd, img) {
+  var generatedCommand = newCommand(cmd);
+  var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=\"submitCommand(").concat(cmd, ")\" > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
+  return buttonHtml;
+}
 function createNewButton(label, cmd, img) {
   var generatedCommand = sideCommand(cmd);
   var buttonHtml = "<button title=\"".concat(label, "\" alt=\"").concat(label, "\" class=\"button mannyButton\" onclick=\"document.location=").concat(generatedCommand, "; void(0);\" > <table> <tr> <td valign=\"center\" align=\"center\"> <img src=\"images/itemimages/").concat(img, ".gif\" height=\"30\" width=\"30\" /> </td> <td valign=\"center\" align=\"center\" width=\"200\"> <div class=\"b\">").concat(label, "</div> </td> </tr> </table> </button>");
   return buttonHtml;
 }
-/*
-export function createConditionalButton(
-  label: string,
-  cmd: string,
-  img: string,
-  prop: string
-): string {
-  const generatedCommand = mainPaneCommand(cmd);
-  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick="document.location=${generatedCommand}" > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
-  if (get(prop) !== value) {
-    return "";
-  } else {
-    return buttonHtml;
-  }
-}
-*/
 ;// CONCATENATED MODULE: ./src/main.ts
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 
@@ -2878,23 +2866,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
  // link this script's css sheet
 
-var cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>'; // let buttons: string[];
-
-/*
-const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-
-buttons.push[createNewButton("Check yo boxen", "cc_snapshot", "familiar25")];
-*/
-// const ballsButton = createNewButton("balls", 'ashq print("balls", "blue")', "ballhat");
-// buttons.push(ballsButton);
-
-var greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25");
-var joebutton = createNewButton("Play Subway Surfers", "subway surfers", "subwaysurfers"); // buttons.push(greenBoxButton);
-// TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
+var cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
+var greenBoxButton = createNewButton("Check yo boxen", "av-snapshot", "familiar25"); // TODO: there has to be a way to do the construction and push to the array in a single function call. add array name as param in createNewButton?
 
 var breakfastButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myInebriety)() === 0 && (0,external_kolmafia_namespaceObject.myFullness)() === 0 && !get("_cargoPocketEmptied")) {
+if ((0,external_kolmafia_namespaceObject.myInebriety)() === 0 && (0,external_kolmafia_namespaceObject.myFullness)() === 0 && get("_saberMod") === 0) {
   breakfastButton = createNewButton("Breakfast time!", "mannyBreakfast", "coffeecup");
 }
 
@@ -2938,7 +2915,7 @@ if ((0,external_kolmafia_namespaceObject.myPath)() === $path(_templateObject3 ||
 
 var rolloverButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myPath)() === $path(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["none"]))) && (0,external_kolmafia_namespaceObject.myInebriety)() >= (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.myAdventures)() < 20) {
+if ((0,external_kolmafia_namespaceObject.myPath)() === $path(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["none"]))) && (0,external_kolmafia_namespaceObject.myInebriety)() >= (0,external_kolmafia_namespaceObject.inebrietyLimit)()) {
   rolloverButton = createNewButton("Put on those PJs", "mannyRoll", "nicewatch");
 }
 
@@ -2950,7 +2927,7 @@ if ((0,external_kolmafia_namespaceObject.pvpAttacksLeft)() > 0) {
 
 var garboButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myAdventures)() > 0) {
+if ((0,external_kolmafia_namespaceObject.myAdventures)() > 0 && (0,external_kolmafia_namespaceObject.myInebriety)() <= (0,external_kolmafia_namespaceObject.inebrietyLimit)()) {
   if ((0,external_kolmafia_namespaceObject.myDaycount)() === 2) {
     garboButton = createNewButton("Run garbo ascend nobarf!", "garbo ascend nobarf workshed=train", "parkGarbage");
   } else if ((0,external_kolmafia_namespaceObject.myDaycount)() === 1) {
@@ -2961,11 +2938,7 @@ if ((0,external_kolmafia_namespaceObject.myAdventures)() > 0) {
 var overdrinkButton = "";
 
 if ((0,external_kolmafia_namespaceObject.myPath)() === $path(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["none"]))) && (0,external_kolmafia_namespaceObject.myInebriety)() === (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.myAdventures)() === 0) {
-  if ((0,external_kolmafia_namespaceObject.myDaycount)() === 2 && !get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  } else if ((0,external_kolmafia_namespaceObject.myDaycount)() === 1 && get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  }
+  overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
 }
 
 var baggoButton = "";
@@ -2976,11 +2949,13 @@ if ((0,external_kolmafia_namespaceObject.myFullness)() === (0,external_kolmafia_
 
 var fancyFoodButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myFullness)() === 0 && (0,external_kolmafia_namespaceObject.myInebriety)() <= 5) {
+if ((0,external_kolmafia_namespaceObject.myFullness)() === 0 && (0,external_kolmafia_namespaceObject.myInebriety)() === 0) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
+var beldurButton = createAjaxButton("Beldur is smart!", "csend holiday fun to beldur", "holidaylog");
 var buttons = [];
+buttons.push(beldurButton);
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
 buttons.push(csGashHop); // buttons.push(casualHop);
@@ -2994,10 +2969,11 @@ buttons.push(overdrinkButton);
 buttons.push(pvpButton);
 buttons.push(garboButton);
 buttons.push(baggoButton);
-buttons.push(joebutton);
 var borderBoxStart = '<center><div id="mannyScriptsBox"><table  width=95%  cellspacing=0 cellpadding=0><tr><td style="color: white;" align=center bgcolor=green><b>Good Morning, Manny, what would you like to do today?</b></td></tr><tr><td style="padding: 5px; border: 1px solid green;"><center><div>';
 var borderBoxEnd = "</div></center></table></div></center>";
 var newScriptBox = borderBoxStart;
+var commandfunction2 = "<script language=Javascript src=\"/manny-relay/buttoncmd.js\"></script>";
+var commandfunction = '<script>  function submitCommand(commandText) {     const req = new XMLHttpRequest();     req.open("GET", `/KoLmafia/submitCommand?cmd=${urlEncode(commandText)}&pwd=${myHash()}`);     req.send(); } </script>';
 buttons.forEach(element => {
   newScriptBox = newScriptBox.concat(element);
 });
@@ -3006,7 +2982,7 @@ newScriptBox = newScriptBox.concat(borderBoxEnd);
 function main() {
   var page = (0,external_kolmafia_namespaceObject.visitUrl)();
   var strStrt = (0,external_kolmafia_namespaceObject.indexOf)(page, "<body>");
-  var newpage = page.slice(0, strStrt) + cssLink + newScriptBox + page.slice(strStrt); // page = insert(page, strStrt, scriptBox);
+  var newpage = page.slice(0, strStrt) + cssLink + commandfunction + newScriptBox + page.slice(strStrt); // page = insert(page, strStrt, scriptBox);
 
   (0,external_kolmafia_namespaceObject.write)(newpage);
   /*
