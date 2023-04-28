@@ -5,6 +5,7 @@ import {
   myAdventures,
   myDaycount,
   myFullness,
+  myHash,
   myInebriety,
   myPath,
   pvpAttacksLeft,
@@ -13,10 +14,12 @@ import {
 } from "kolmafia";
 import { $path } from "libram";
 import { get } from "libram/dist/property";
-import { createNewButton } from "./mannyRelayLib";
+import { createNewButton, createTestButton } from "./mannyRelayLib";
 
 // link this script's css sheet
 const cssLink = '<link rel="stylesheet" href="/manny-relay/main.css"></link>';
+
+const newbuttonscript = `<script lang="Javascript"> function myFunction2(command) {  const req = new XMLHttpRequest(); req.open("GET", \`/KoLmafia/submitCommand?cmd=\${command}&pwd=${myHash()}\`); req.send(); } </script>`;
 
 // let buttons: string[];
 /*
@@ -119,7 +122,10 @@ if (myFullness() === 0 && myInebriety() <= 5) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 
+const beldurButton = createTestButton("Beldur is smart", "js myInebriety()", "hamburger");
+
 const buttons = [];
+buttons.push(beldurButton);
 buttons.push(breakfastButton);
 buttons.push(postloopButton);
 buttons.push(csGashHop);
@@ -149,9 +155,8 @@ newScriptBox = newScriptBox.concat(borderBoxEnd);
 function main() {
   const page = visitUrl();
   const strStrt = indexOf(page, "<body>");
-  const newpage = page.slice(0, strStrt) + cssLink + newScriptBox + page.slice(strStrt);
-  // page = insert(page, strStrt, scriptBox);
-
+  const newpage =
+    page.slice(0, strStrt) + cssLink + newbuttonscript + newScriptBox + page.slice(strStrt);
   write(newpage);
   /*
   if (formField("cmd") !== "") {

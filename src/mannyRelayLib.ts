@@ -29,11 +29,40 @@ string mainCommand(string cmd) {
 	return c;
 } */
 
+function ajaxCommand(cmd: string): string {
+  let c = "'";
+  c = c.concat("const req = new XMLHttpRequest(); ");
+  c = c.concat('req.open("GET", `/KoLmafia/submitCommand?cmd=');
+  c = c.concat(urlEncode(cmd));
+  c = c.concat('"&pwd=');
+  c = c.concat(myHash());
+  c = c.concat(" req.send();");
+  c = c.concat("'");
+  return c;
+}
+
 export function createNewButton(label: string, cmd: string, img: string): string {
-  const generatedCommand = sideCommand(cmd);
-  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick="document.location=${generatedCommand}; void(0);" > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
+  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick=myFunction2("${urlEncode(
+    cmd
+  )}") > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
   return buttonHtml;
 }
+
+export function createAjaxButton(label: string, cmd: string, img: string): string {
+  const generatedCommand = ajaxCommand(cmd);
+  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick="${ajaxCommand(
+    cmd
+  )}" > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
+  return buttonHtml;
+}
+export function createTestButton(label: string, cmd: string, img: string): string {
+  // const generatedCommand = sideCommand(cmd);
+  const buttonHtml = `<button title="${label}" alt="${label}" class="button mannyButton" onclick=myFunction2("${urlEncode(
+    cmd
+  )}") > <table> <tr> <td valign="center" align="center"> <img src="images/itemimages/${img}.gif" height="30" width="30" /> </td> <td valign="center" align="center" width="200"> <div class="b">${label}</div> </td> </tr> </table> </button>`;
+  return buttonHtml;
+}
+
 /*
 export function createConditionalButton(
   label: string,
