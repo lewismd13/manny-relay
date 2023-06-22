@@ -82,11 +82,7 @@ if (myAdventures() > 0) {
 
 let overdrinkButton = "";
 if (myPath() === $path`none` && myInebriety() === inebrietyLimit() && myAdventures() === 0) {
-  if (myDaycount() === 2 && !get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  } else if (myDaycount() === 1 && get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  }
+  overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
 }
 
 let baggoButton = "";
@@ -95,7 +91,7 @@ if (myFullness() === fullnessLimit() && myAdventures() > 0 && myInebriety() <= i
 }
 
 let fancyFoodButton = "";
-if (myFullness() === 0 && myInebriety() <= 5) {
+if (myFullness() === 0 && myInebriety() <= 3 && myDaycount() === 2) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 

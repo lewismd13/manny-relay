@@ -1,0 +1,5 @@
+{
+  "name": "Check your boxes",
+  "command": "av-snapshot",
+  "image": "familiar25"
+}

@@ -2895,11 +2895,7 @@ if ((0,external_kolmafia_namespaceObject.myAdventures)() > 0) {
 var overdrinkButton = "";
 
 if ((0,external_kolmafia_namespaceObject.myPath)() === $path(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["none"]))) && (0,external_kolmafia_namespaceObject.myInebriety)() === (0,external_kolmafia_namespaceObject.inebrietyLimit)() && (0,external_kolmafia_namespaceObject.myAdventures)() === 0) {
-  if ((0,external_kolmafia_namespaceObject.myDaycount)() === 2 && !get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  } else if ((0,external_kolmafia_namespaceObject.myDaycount)() === 1 && get("csServicesPerformed")) {
-    overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
-  }
+  overdrinkButton = createNewButton("Get drunj", "overdrink", "pokefam47");
 }
 
 var baggoButton = "";
@@ -2910,7 +2906,7 @@ if ((0,external_kolmafia_namespaceObject.myFullness)() === (0,external_kolmafia_
 
 var fancyFoodButton = "";
 
-if ((0,external_kolmafia_namespaceObject.myFullness)() === 0 && (0,external_kolmafia_namespaceObject.myInebriety)() <= 5) {
+if ((0,external_kolmafia_namespaceObject.myFullness)() === 0 && (0,external_kolmafia_namespaceObject.myInebriety)() <= 3 && (0,external_kolmafia_namespaceObject.myDaycount)() === 2) {
   fancyFoodButton = createNewButton("Fancy diet!", "fancyfood", "hamburger");
 }
 

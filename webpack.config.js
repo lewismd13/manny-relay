@@ -7,7 +7,7 @@ module.exports = {
     // Point "entry" to scripts you want to be CLI-eligible.
     // mainrelay: "./src/main-ts.ts",
     main: "./src/main.ts",
-    buttontest: "./src/buttonTest.ts",
+    // buttontest: "./src/buttonTest.ts",
   },
   mode: "production",
   devtool: false,
